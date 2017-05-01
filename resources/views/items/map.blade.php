@@ -96,11 +96,17 @@
     var markers = new Array();
     var bounds = new google.maps.LatLngBounds();
     @foreach($stores as $item)
+      var infowindow{{$item->id}} = new google.maps.InfoWindow({
+        content: '{{$item->title}}'
+      });
       var latlng = new google.maps.LatLng({{$item->location}});
       var marker{{$item->id}} = new google.maps.Marker({
         position: latlng,
         map: map,
         title: "{{$item->title}}"
+      });
+      marker{{$item->id}}.addListener('click', function() {
+         infowindow{{$item->id}}.open(map, marker{{$item->id}});
       });
       markers.push(marker{{$item->id}});
 
