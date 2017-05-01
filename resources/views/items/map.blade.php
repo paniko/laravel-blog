@@ -19,9 +19,9 @@
   <div class="row">
     <div class="col-md-4">
       <h4>Elenco città in prossimità di: <span id="city-prox"></span></h4>
-      <ul id="stores">
+      <ul id="stores" class="list-group">
         @foreach ($stores as $store)
-          <li>{{$store->title}}</li>
+          <li class="list-group-item">{{$store->title}}</li>
         @endforeach
       </ul>
     </div>
@@ -58,8 +58,7 @@
       $.get('/api/stores/near/'+ui.item.id,function(JSONData){
         var obj = $.parseJSON(JSONData);
         for (var key in obj) {
-          console.log(key + ': ' + obj[key].title);
-          out += '<li><a class="store-link" href="#" data-storeid="'+obj[key].id+'" data-location="'+obj[key].location+'">'+obj[key].title+'</a></li>';
+          out += '<a class="store-link list-group-item" href="#" data-storeid="'+obj[key].id+'" data-location="'+obj[key].location+'">'+obj[key].title+'</a>';
         }
 
         $('#stores').empty().append(out);
