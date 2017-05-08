@@ -17,7 +17,6 @@ class ItemsController extends Controller
       }
 
   		return view('items.map')->with(['stores'=>$stores]);
-
   }
 
 

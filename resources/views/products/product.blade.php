@@ -11,7 +11,7 @@
     @if(!empty( $product->created_at ))
     {{ $product->created_at->toFormattedDateString() }}
     @endif
-    by <a href="#">Mark</a></p>
+  </p>
   <p>{{$product->description}}</p>
 
 </div><!-- /.blog-post -->

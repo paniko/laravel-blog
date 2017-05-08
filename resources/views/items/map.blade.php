@@ -33,59 +33,59 @@
 
 
   <script type="text/javascript">
-  function log( message ) {
-    $( "<div>" ).text( message ).prependTo( "#log" );
-    $( "#log" ).scrollTop( 0 );
-  };
+    function log( message ) {
+      $( "<div>" ).text( message ).prependTo( "#log" );
+      $( "#log" ).scrollTop( 0 );
+    };
 
-  $( "#city" ).autocomplete({
-    source: "/api/stores",
-    focus: function( event, ui ) {
-      $( "#city" ).val( ui.item.title );
-      return false;
-    },
-    minLength: 2,
-    select: function( event, ui ) {
-      var coordinates = ui.item.location.split(',');
+    $( "#city" ).autocomplete({
+      source: "/api/stores",
+      focus: function( event, ui ) {
+        $( "#city" ).val( ui.item.title );
+        return false;
+      },
+      minLength: 2,
+      select: function( event, ui ) {
+        var coordinates = ui.item.location.split(',');
+        var latitude = coordinates[0];
+        var longitude = coordinates[1];
+
+        map.panTo(new google.maps.LatLng(latitude, longitude));
+        map.setZoom(13);
+
+        //update list stores
+        var out ='';
+        $.get('/api/stores/near/'+ui.item.id,function(JSONData){
+          var obj = $.parseJSON(JSONData);
+          for (var key in obj) {
+            out += '<a class="store-link list-group-item" href="#" data-storeid="'+obj[key].id+'" data-location="'+obj[key].location+'">'+obj[key].title+'</a>';
+          }
+
+          $('#stores').empty().append(out);
+        });
+        $('#city-prox').text(ui.item.title);
+
+      }
+    })
+    .autocomplete( "instance" )._renderItem = function( ul, item ) {
+      return $( "<li>" )
+      .append( "<div>" + item.title + "</div>" )
+      .appendTo( ul );
+    };
+
+    $('body').on('click','.store-link',function(){
+      var storeId = $(this).data('storeid');
+      var storeLocation = $(this).data('location');
+      var coordinates = storeLocation.split(',');
       var latitude = coordinates[0];
       var longitude = coordinates[1];
 
       map.panTo(new google.maps.LatLng(latitude, longitude));
       map.setZoom(13);
-
-      //update list stores
-      var out ='';
-      $.get('/api/stores/near/'+ui.item.id,function(JSONData){
-        var obj = $.parseJSON(JSONData);
-        for (var key in obj) {
-          out += '<a class="store-link list-group-item" href="#" data-storeid="'+obj[key].id+'" data-location="'+obj[key].location+'">'+obj[key].title+'</a>';
-        }
-
-        $('#stores').empty().append(out);
-      });
-      $('#city-prox').text(ui.item.title);
-
-    }
-  })
-  .autocomplete( "instance" )._renderItem = function( ul, item ) {
-    return $( "<li>" )
-    .append( "<div>" + item.title + "</div>" )
-    .appendTo( ul );
-  };
-
-  $('body').on('click','.store-link',function(){
-    var storeId = $(this).data('storeid');
-    var storeLocation = $(this).data('location');
-    var coordinates = storeLocation.split(',');
-    var latitude = coordinates[0];
-    var longitude = coordinates[1];
-
-    map.panTo(new google.maps.LatLng(latitude, longitude));
-    map.setZoom(13);
-  });
+    });
 
 
-  function initMap() {
+    function initMap() {
     var mapOptions = {
       zoom: 10,
       center: new google.maps.LatLng({{$stores[0]->location}})
@@ -118,9 +118,9 @@
 
     }
 
-    </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD797OdtkIGEgwod86lF4VXdXaN-Qk8-Do&callback=initMap">
-    </script>
+  </script>
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD797OdtkIGEgwod86lF4VXdXaN-Qk8-Do&callback=initMap">
+  </script>
 
   @endsection

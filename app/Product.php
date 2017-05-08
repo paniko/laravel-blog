@@ -3,6 +3,7 @@
 namespace App;
 use Carbon\Carbon;
 use App\User;
+use App\Comment;
 
 class Product extends Model
 {
@@ -13,7 +14,7 @@ class Product extends Model
       return $this->hasMany(Comment::class);
     }
     public function attachements(){
-      return $this->hasMany(Attachements::class);
+      return $this->hasMany(Attachement::class);
     }
     public function user(){
       return $this->belongsTo(User::class);
@@ -35,8 +36,8 @@ class Product extends Model
       $query->where('publish',1);
     }
 
-    public function addComment($body){
-      $this->comments()->create(compact('body'));
+    public function addComment($body, $user_id){
+      $this->comments()->create(compact('body','user_id'));
     }
 
     public static function archives()

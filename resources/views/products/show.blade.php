@@ -5,6 +5,7 @@
     {{$product->language_id}}
 
     <hr>
+    @if(count($product->comments))
     <div class="comments">
       <ul class="list-group">
       @foreach($product->comments as $comment)
@@ -15,6 +16,7 @@
       @endforeach
       </ul>
     </div>
+    @endif
     <hr>
     {{--create a form insert comments--}}
     <div class="card">

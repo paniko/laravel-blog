@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Product;
+use App\Media;
 //use App\Repositories\Product;
 
 class ProductsController extends Controller

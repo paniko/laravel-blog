@@ -12,7 +12,8 @@ class CommentsController extends Controller
     $this->validate(request(),[
       'body' => 'required|min:2',
     ]);
-    $product->addComment(request('body'));
+    $user_id = auth()->id();
+    $product->addComment(request('body'), $user_id);
 
     // $comment = new Comment;
     // Comment::create([
